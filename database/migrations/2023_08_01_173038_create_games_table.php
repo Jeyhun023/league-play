@@ -16,10 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('championship_id');
             $table->unsignedBigInteger('home_team');
             $table->unsignedBigInteger('away_team');
-            $table->integer('home_team_score');
-            $table->integer('away_team_score');
-            $table->dateTime('match_date');
-            $table->timestamps();
+            $table->integer('home_team_score')->default(0);
+            $table->integer('away_team_score')->default(0);
+            $table->integer('week');
+            $table->boolean('played')->default(0);
 
             $table->foreign('championship_id')->references('id')->on('championships');
             $table->foreign('home_team')->references('id')->on('teams');

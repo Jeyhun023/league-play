@@ -10,10 +10,12 @@ class Game extends Model
     use HasFactory;
 
     protected $fillable = [
+        'championship_id',
         'home_team', 
         'away_team', 
         'home_team_score', 
         'away_team_score', 
-        'match_date'
+        'week',
+        'played'
     ];
 }

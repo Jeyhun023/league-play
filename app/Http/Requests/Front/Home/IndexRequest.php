@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Home;
+namespace App\Http\Requests\Front\Home;
 
 use App\Http\ViewSet\Front\Home\IndexViewSet;
 use Illuminate\Foundation\Http\FormRequest;
@@ -23,7 +23,7 @@ class IndexRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     public function rules(): array

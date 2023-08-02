@@ -14,7 +14,11 @@ return new class extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('strength');
+            $table->enum('play_style', ['technical', 'physical', 'aerial']);
+            $table->enum('tactic', ['high_press', 'deep_defense', 'attacking']);
+            $table->enum('strength', ['counter_attack', 'full_defense']);
+            $table->enum('weakness', ['press_resistance', 'breaking_defense']);
+            $table->integer('power');
             $table->timestamps();
         });
     }
