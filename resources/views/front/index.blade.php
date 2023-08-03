@@ -21,7 +21,7 @@
                             <th>W</th>
                             <th>D</th>
                             <th>L</th>
-                            <th>SE</th>
+                            <th>GD</th>
                         </tr>
                     </thead>
                     <tbody>
