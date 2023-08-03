@@ -71,7 +71,7 @@ function updatePredictions(probability) {
     // Iterate through the probability object and create elements for each team's probability
     $.each(probability, function(teamName, teamProbability) {
         var $p = $('<p>');
-        $p.text(teamName + ': ' + teamProbability + '%');
+        $p.text(teamName + ' : ' + teamProbability + '%');
         $predictionsDiv.append($p);
     });
 }
