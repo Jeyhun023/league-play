@@ -39,7 +39,7 @@ class IndexViewSet extends AbstractViewSet
     public function games(): Collection
     {
         return $this->championship->games()
-            ->played()->with('homeTeam', 'awayTeam')->get()->groupBy('week');
+            ->played()->with('homeTeam', 'awayTeam')->orderBy('week')->get();
     }
 
     public function probabilities(): array

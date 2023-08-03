@@ -52,26 +52,34 @@
             </div>
             
             <!-- Match Results -->
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <h4>Match Results</h4>
                 <ul id="matches" class="list-group">
-                    @foreach($data->games() as $weeks)
-                        @foreach($weeks as $game)
-                            <li class="list-group-item">
+                    @foreach($data->games() as $game)
+                        <li class="result list-group-item" data-game-id="{{ $game->id }}">
+                            <span class="home-name">
                                 {{ $game->homeTeam->name }} 
+                            </span>
+                            <span class="home-score">
                                 {{ $game->home_team_score }}
-                                -
+                            </span>
+                            -
+                            <span class="away-score">
                                 {{ $game->away_team_score }}
+                            </span>
+                            <span class="away-name">
                                 {{ $game->awayTeam->name }}
-                                (Week {{ $game->week }})
-                            </li>
-                        @endforeach
+                            </span>
+                            (Week {{ $game->week }})
+
+                            <button onclick=editGame(this) class="ml-2 btn btn-info">Edit</button>
+                        </li>
                     @endforeach
                 </ul>
             </div>
 
             <!-- Predictions Section -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <h4>Predictions</h4>
                 <div id="predictions">
                     @foreach($data->probabilities() as $key => $value)
@@ -86,7 +94,7 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="{{ asset('front/js/app.js')}}"></script>

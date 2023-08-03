@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Game;
 use App\Models\Championship;
 use Illuminate\Http\Request;
+use App\Http\Requests\Api\Game\UpdateRequest;
 use App\Http\Controllers\Controller as BaseController;
 use App\Services\LeagueService;
 use Illuminate\Support\Facades\Cookie;
@@ -59,6 +61,19 @@ class GameController extends BaseController
 
         return response()->json([
             'games' => $games,
+            'scoreTable' => $this->championship->getScoreTable(),
+            'probability' => $this->championship->getChampionshipProbabilities(),
+        ]);
+    }
+
+    public function update(UpdateRequest $request, Game $game)
+    {
+        $game->update([
+            'home_team_score' => $request->homeScore,
+            'away_team_score' => $request->awayScore
+        ]);
+
+        return response()->json([
             'scoreTable' => $this->championship->getScoreTable(),
             'probability' => $this->championship->getChampionshipProbabilities(),
         ]);

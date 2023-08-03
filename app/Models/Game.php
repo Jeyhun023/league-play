@@ -35,6 +35,11 @@ class Game extends Model
         return $this->belongsTo(Team::class, 'away_team');
     }
 
+    public function championship()
+    {
+        return $this->belongsTo(Championship::class);
+    }
+
     public function scopeNotPlayed(Builder $builder): Builder
     {
         return $builder->where('played', false);
