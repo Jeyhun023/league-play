@@ -78,7 +78,7 @@
                         <p>
                             {{ $key }} 
                             :
-                            {{ $value }}
+                            {{ $value }}%
                         </p>
                     @endforeach
                 </div>

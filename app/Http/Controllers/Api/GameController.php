@@ -49,7 +49,8 @@ class GameController extends BaseController
     {
         $currentWeek = $this->championship->games()->where('played', false)->min('week');
 
-        $games = $this->championship->games()->remainingWeeks($currentWeek)->get();
+        $games = $this->championship->games()
+            ->orderBy('week', 'asc')->remainingWeeks($currentWeek)->get();
 
         foreach ($games as $game) {
             $results = $this->leagueService->predict($game);
