@@ -10,6 +10,9 @@ class Game extends Model
 {
     use HasFactory;
 
+    public const WIN_POINT = 3;
+    public const DRAFT_POINT = 1;
+
     public $timestamps = false;
 
     protected $fillable = [

@@ -24,28 +24,46 @@ class Championship extends Model
 
     public function getChampionshipProbabilities()
     {
-        $standings = $this->getScoreTable();
-        $maxWeek = Team::getMaxWeek();
-        $totalRemainingPoints = ($maxWeek - 1) * 3 * count($this->getScoreTable($standings));
+        $WIN_POINTS = Game::WIN_POINT;
 
-        if ($totalRemainingPoints == 0) {
-            return null; // Avoid division by zero
+        $currentWeek = Game::where('championship_id', $this->id)->where('played', true)->max('week');
+        $totalWeeks = Team::getMaxWeek();
+
+        $scoreTable = $this->getScoreTable(); 
+
+        $teams = [];
+        foreach ($scoreTable as $row) {
+            $teams[] = [
+                'name' => $row['team']->name,
+                'points' => $row['PTS']
+            ];
         }
 
-        $probabilities = [];
-        $totalPoints = 0;
-        
-        foreach ($standings as $standing) {
-            $remainingMatches = ($maxWeek - 1) * 2; // two matches per week
-            $potentialPoints = $standing['PTS'] + $remainingMatches * 3; // assuming a win for all remaining matches
-            $totalPoints += $potentialPoints;
+        // Sort by current points
+        usort($teams, function ($a, $b) {
+            return $b['points'] - $a['points'];
+        });
+
+        // Calculate remaining matches
+        $remainingMatches = $totalWeeks - $currentWeek;
+
+        // Check if the top team is unreachable by others
+        $maxPointsForSecondTeam = $teams[1]['points'] + ($WIN_POINTS * $remainingMatches);
+        if ($teams[0]['points'] > $maxPointsForSecondTeam) {
+            $probabilities[$teams[0]['name']] = 100;
+            for ($i = 1; $i < count($teams); $i++) {
+                $probabilities[$teams[$i]['name']] = 0;
+            }
+            return $probabilities;
         }
 
-        foreach ($standings as $standing) {
-            $remainingMatches = ($maxWeek - 1) * 2; // two matches per week
-            $potentialPoints = $standing['PTS'] + $remainingMatches * 3; // assuming a win for all remaining matches
-            $probability = $potentialPoints / $totalPoints * 100;
-            $probabilities[$standing['team']->name] = round($probability);
+        // Calculate the probability based on max possible points
+        $totalMaxPoints = 0;
+        foreach ($teams as $team) {
+            $totalMaxPoints += $team['points'] + ($WIN_POINTS * $remainingMatches);
+        }
+        foreach ($teams as $team) {
+            $probabilities[$team['name']] = round((($team['points'] + ($WIN_POINTS * $remainingMatches)) / $totalMaxPoints) * 100);
         }
 
         return $probabilities;
@@ -53,10 +71,8 @@ class Championship extends Model
 
     public function getScoreTable()
     {
-        // Retrieve games for the current championship
         $games = $this->games()->played()->get();
 
-        // Initialize standings
         $standings = [];
 
         foreach (Team::all() as $team) {
