@@ -19,7 +19,6 @@ return new class extends Migration
             $table->enum('strength', ['counter_attack', 'full_defense']);
             $table->enum('weakness', ['press_resistance', 'breaking_defense']);
             $table->integer('power');
-            $table->timestamps();
         });
     }
 

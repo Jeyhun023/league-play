@@ -9,7 +9,9 @@ class Team extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'strength'];
+    public $timestamps = false;
+    
+    protected $fillable = ['name'];
 
     public static function getMaxWeek($matchesPerWeek = 2) {
         $totalTeams = self::all()->count();

@@ -5,8 +5,6 @@ use App\Models\Team;
 use App\Models\Game;
 use App\Models\Championship;
 use App\Http\ViewSet\AbstractViewSet;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Collection;
 use App\Http\Requests\Front\Home\IndexRequest;
 
@@ -22,10 +20,10 @@ class IndexViewSet extends AbstractViewSet
      */
     protected $championship;
 
-    public function __construct(IndexRequest $request)
+    public function __construct(IndexRequest $request, Championship $championship)
     {
         $this->request = $request;
-        $this->championship = $this->getChampionship();
+        $this->championship = $championship;
     }
 
     public function request(): IndexRequest
@@ -101,27 +99,5 @@ class IndexViewSet extends AbstractViewSet
         });
 
         return $standings;
-    }
-
-    protected function getUserSession(): string
-    {
-        if (!Session::has('session')) {
-            Session::put('session', Str::random(60));
-        }
-
-        return $this->request->session()->get('session');
-    }
-
-    protected function getChampionship(): Championship
-    {
-        $championship = Championship::firstOrCreate([
-            'session' => $this->getUserSession()
-        ]);
-
-        if ($championship->wasRecentlyCreated) {
-            event(new \App\Events\ChampionshipCreated($championship));
-        }
-
-        return $championship;
     }
 }

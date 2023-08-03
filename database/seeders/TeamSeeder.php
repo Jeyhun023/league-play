@@ -20,7 +20,7 @@ class TeamSeeder extends Seeder
                 'tactic' => 'high_press',
                 'strength' => 'counter_attack',
                 'weakness' => 'breaking_defense',
-                'power' => 95
+                'power' => 20
             ],
             [
                 'name' => 'Liverpool', 
@@ -28,7 +28,7 @@ class TeamSeeder extends Seeder
                 'tactic' => 'deep_defense',
                 'strength' => 'full_defense',
                 'weakness' => 'press_resistance',
-                'power' => 90
+                'power' => 15
             ],
             [
                 'name' => 'Chelsea', 
@@ -36,7 +36,7 @@ class TeamSeeder extends Seeder
                 'tactic' => 'attacking',
                 'strength' => 'counter_attack',
                 'weakness' => 'breaking_defense',
-                'power' => 85
+                'power' => 10
             ],
             [
                 'name' => 'Arsenal', 
@@ -44,7 +44,7 @@ class TeamSeeder extends Seeder
                 'tactic' => 'attacking',
                 'strength' => 'counter_attack',
                 'weakness' => 'press_resistance',
-                'power' => 80
+                'power' => 5
             ],
         ]);
     }

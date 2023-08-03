@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Championship extends Model
 {
@@ -14,6 +15,11 @@ class Championship extends Model
     public function games()
     {
         return $this->hasMany(Game::class);
+    }
+
+    public function scopeSession(Builder $builder, $session): Builder
+    {
+        return $builder->where('session', $session);
     }
 
     public static function getChampionshipProbabilities($standings, $currentWeek)
