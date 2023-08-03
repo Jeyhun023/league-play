@@ -38,66 +38,17 @@ class IndexViewSet extends AbstractViewSet
 
     public function games(): Collection
     {
-        return $this->championship->games()->get()->groupBy('week');
+        return $this->championship->games()
+            ->played()->with('homeTeam', 'awayTeam')->get()->groupBy('week');
     }
 
     public function probabilities(): array
     {
-        return Championship::getChampionshipProbabilities($this->scoreTable(), 5);
+        return $this->championship->getChampionshipProbabilities();
     }
 
     public function scoreTable(): array
     {
-        // Retrieve games for the current championship
-        $games = Game::where('championship_id', $this->championship->id)->get();
-
-        // Initialize standings
-        $standings = [];
-
-        foreach (Team::all() as $team) {
-            $standings[$team->id] = [
-                'team' => $team,
-                'PTS' => 0,
-                'P' => 0,
-                'W' => 0,
-                'D' => 0,
-                'L' => 0,
-                'GD' => 0,
-            ];
-        }
-
-        // Calculate standings
-        foreach ($games as $match) {
-            $home = &$standings[$match->home_team];
-            $away = &$standings[$match->away_team];
-
-            $home['P']++;
-            $away['P']++;
-
-            $home['GD'] += ($match->home_team_score - $match->away_team_score);
-            $away['GD'] += ($match->away_team_score - $match->home_team_score);
-
-            if ($match->home_team_score > $match->away_team_score) {
-                $home['W']++;
-                $away['L']++;
-                $home['PTS'] += 3;
-            } elseif ($match->home_team_score < $match->away_team_score) {
-                $home['L']++;
-                $away['W']++;
-                $away['PTS'] += 3;
-            } else {
-                $home['D']++;
-                $away['D']++;
-                $home['PTS'] += 1;
-                $away['PTS'] += 1;
-            }
-        }
-
-        // Sort by points
-        usort($standings, function ($a, $b) {
-            return $b['PTS'] - $a['PTS'];
-        });
-
-        return $standings;
+        return $this->championship->getScoreTable();
     }
 }

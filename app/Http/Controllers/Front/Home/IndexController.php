@@ -10,24 +10,17 @@ use App\Http\Controllers\Controller as BaseController;
 
 class IndexController extends BaseController
 {
-    /**
-     * @var Cookie
-     */
-    protected $cookie;
-
     public function index(IndexRequest $request)
     {
         $data = $request->getViewSet($this->getChampionship());
 
-        return response()->json($data->scoreTable())->withCookie($this->cookie);
-        //view('front::jobs.index', ['data' => $data]);
+        return view('front.index', ['data' => $data]);
     }
 
     protected function getUserSession(): string
     {
         $token = Cookie::get('session') ?? Str::random(60);
-
-        $this->cookie = Cookie::make('session', $token, 60);
+        Cookie::queue(Cookie::make('session', $token, 60));
 
         return $token;
     }
@@ -43,5 +36,13 @@ class IndexController extends BaseController
         }
 
         return $championship;
+    }
+
+    public function reset()
+    {
+        $token = Str::random(60);
+        Cookie::queue(Cookie::make('session', $token, 60));
+
+        return redirect()->route('front::home.index');
     }
 }

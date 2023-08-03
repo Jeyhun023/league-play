@@ -37,17 +37,18 @@ class Game extends Model
         return $builder->where('played', false);
     }
 
-    public function scopeNextWeek(Builder $builder): Builder
+    public function scopePlayed(Builder $builder): Builder
     {
-        $nextMatch = self::notPlayed()->orderBy('week', 'asc')->first();
-
-        return $builder->where('week', $nextMatch ? $nextMatch->week : null);
+        return $builder->where('played', true);
     }
 
-    public function scopeRemainingWeeks(Builder $builder): Builder
+    public function scopeNextWeek(Builder $builder, $currentWeek): Builder
     {
-        $nextMatch = self::notPlayed()->orderBy('week', 'asc')->first();
+        return $builder->where('week', $currentWeek ?? 0);
+    }
 
-        return $builder->where('week', '>=', $nextMatch ? $nextMatch->week : 7);
+    public function scopeRemainingWeeks(Builder $builder, $currentWeek): Builder
+    {
+        return $builder->where('week', '>=', $currentWeek ?? 7);
     }
 }
