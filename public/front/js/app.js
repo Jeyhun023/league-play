@@ -29,7 +29,6 @@ function updateMatches(games) {
         const awayTeamScore = game.away_team_score;
         const week = game.week;
 
-        // Create a new list item and append it to the match results list
         const listItem = document.createElement('li');
         listItem.classList.add('result', 'list-group-item');
         listItem.setAttribute('data-game-id', game.id);
@@ -58,7 +57,9 @@ function updateMatches(games) {
         awayNameSpan.textContent = ' ' + awayTeamName + ' ';
         listItem.appendChild(awayNameSpan);
 
-        // Create an edit button and append it to the list item
+        const weekInfo = document.createTextNode(' (Week ' + week + ') ');
+        listItem.appendChild(weekInfo);
+
         const editButton = document.createElement('button');
         editButton.textContent = 'Edit';
         editButton.setAttribute('onClick', 'editGame(this);');
